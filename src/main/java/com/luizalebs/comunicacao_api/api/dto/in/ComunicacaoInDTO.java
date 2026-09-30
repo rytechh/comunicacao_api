@@ -1,4 +1,4 @@
-package com.luizalebs.comunicacao_api.api.dto;
+package com.luizalebs.comunicacao_api.api.dto.in;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ToString
-public class    ComunicacaoInDTO implements Serializable {
+public class ComunicacaoInDTO implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dataHoraEnvio;

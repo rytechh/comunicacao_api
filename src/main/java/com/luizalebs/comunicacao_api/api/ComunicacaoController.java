@@ -1,8 +1,8 @@
 package com.luizalebs.comunicacao_api.api;
 
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoInDTO;
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoOutDTO;
-import com.luizalebs.comunicacao_api.api.dto.EnvioMensagemDTORecord;
+import com.luizalebs.comunicacao_api.api.dto.in.ComunicacaoInDTO;
+import com.luizalebs.comunicacao_api.api.dto.out.ComunicacaoOutDTO;
+import com.luizalebs.comunicacao_api.api.dto.out.EnvioMensagemDTOOutRecord;
 import com.luizalebs.comunicacao_api.business.service.ComunicacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +29,7 @@ public class ComunicacaoController {
     }
 
     public ResponseEntity<ComunicacaoOutDTO> enviarComunicacao(@RequestParam("id") Long id,
-                                                               @RequestBody EnvioMensagemDTORecord envioMensagemDTORecord) {
+                                                               @RequestBody EnvioMensagemDTOOutRecord envioMensagemDTORecord) {
         return ResponseEntity.ok(comunicacaoService.enviarComunicacao(id, envioMensagemDTORecord));
     }
 

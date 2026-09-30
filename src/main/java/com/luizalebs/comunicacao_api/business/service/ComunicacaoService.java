@@ -1,9 +1,9 @@
 package com.luizalebs.comunicacao_api.business.service;
 
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoInDTO;
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoOutDTO;
-import com.luizalebs.comunicacao_api.api.dto.EnvioMensagemDTORecord;
-import com.luizalebs.comunicacao_api.business.converter.ComunicacaoConverter;
+import com.luizalebs.comunicacao_api.api.dto.in.ComunicacaoInDTO;
+import com.luizalebs.comunicacao_api.api.dto.out.ComunicacaoOutDTO;
+import com.luizalebs.comunicacao_api.api.dto.out.EnvioMensagemDTOOutRecord;
+import com.luizalebs.comunicacao_api.business.mapper.ComunicacaoMapper;
 import com.luizalebs.comunicacao_api.infraestructure.client.NotificacaoClient;
 import com.luizalebs.comunicacao_api.infraestructure.entities.ComunicacaoEntity;
 import com.luizalebs.comunicacao_api.infraestructure.enums.StatusEnvioEnum;
@@ -18,7 +18,7 @@ import java.util.Objects;
 public class ComunicacaoService {
 
     private final ComunicacaoRepository repository;
-    private final ComunicacaoConverter converter;
+    private final ComunicacaoMapper converter;
     private final NotificacaoClient notificacaoClient;
 
     public ComunicacaoOutDTO agendarComunicacao(ComunicacaoInDTO dto) {
@@ -72,7 +72,7 @@ public class ComunicacaoService {
         return entity.getStatusEnvio() == StatusEnvioEnum.ENVIADO;
     }
 
-    public ComunicacaoOutDTO enviarComunicacao(Long comunicacaoId, EnvioMensagemDTORecord mensagem) {
+    public ComunicacaoOutDTO enviarComunicacao(Long comunicacaoId, EnvioMensagemDTOOutRecord mensagem) {
         ComunicacaoEntity comunicacaoEntity = repository.findById(comunicacaoId)
                 .orElseThrow(() ->
                         new RuntimeException("Comunicação não encontrada"));

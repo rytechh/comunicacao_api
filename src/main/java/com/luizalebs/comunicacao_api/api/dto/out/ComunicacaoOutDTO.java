@@ -1,4 +1,4 @@
-package com.luizalebs.comunicacao_api.api.dto;
+package com.luizalebs.comunicacao_api.api.dto.out;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.luizalebs.comunicacao_api.infraestructure.enums.ModoEnvioEnum;

@@ -1,6 +1,6 @@
-package com.luizalebs.comunicacao_api.api.dto;
+package com.luizalebs.comunicacao_api.api.dto.out;
 
-public record EnvioMensagemDTORecord(
+public record EnvioMensagemDTOOutRecord(
 
         String nomeDestinatario,
         String emailDestinatario,

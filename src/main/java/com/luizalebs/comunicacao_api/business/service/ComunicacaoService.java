@@ -31,13 +31,13 @@ public class ComunicacaoService {
         return converter.paraDTO(entity);
     }
 
-    private ComunicacaoEntity buscarComunicacao(String emailDestinatario) {
+    private ComunicacaoEntity buscarStatus(String emailDestinatario) {
 
         ComunicacaoEntity entity =
                 repository.findByEmailDestinatario(emailDestinatario);
 
         if (Objects.isNull(entity)) {
-            throw new RuntimeException("Comunicação não encontrada");
+            throw new RuntimeException("Email não encontrado");
         }
 
         return entity;
@@ -46,7 +46,7 @@ public class ComunicacaoService {
     public ComunicacaoOutDTO buscarStatusComunicacao(String emailDestinatario) {
 
         ComunicacaoEntity entity =
-                buscarComunicacao(emailDestinatario);
+                buscarStatus(emailDestinatario);
 
         return converter.paraDTO(entity);
     }
@@ -54,7 +54,7 @@ public class ComunicacaoService {
     public ComunicacaoOutDTO cancelarStatus(String emailDestinatario) {
 
         ComunicacaoEntity entity =
-                buscarComunicacao(emailDestinatario);
+                buscarStatus(emailDestinatario);
 
         entity.setStatusEnvio(StatusEnvioEnum.CANCELADO);
 

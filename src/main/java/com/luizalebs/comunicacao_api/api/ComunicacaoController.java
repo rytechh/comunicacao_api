@@ -24,13 +24,8 @@ public class ComunicacaoController {
     @ApiResponse(responseCode = "200", description = "Agendamento salvo com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro do cliente") //revisar isso aqui
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
-    public ResponseEntity<ComunicacaoOutDTO> agendar(@RequestBody ComunicacaoInDTO dto) {
+    public ResponseEntity<ComunicacaoOutDTO> agendarComunicacao(@RequestBody ComunicacaoInDTO dto) {
         return ResponseEntity.ok(comunicacaoService.agendarComunicacao(dto));
-    }
-
-    public ResponseEntity<ComunicacaoOutDTO> enviarComunicacao(@RequestParam("id") Long id,
-                                                               @RequestBody EnvioMensagemDTOOutRecord envioMensagemDTORecord) {
-        return ResponseEntity.ok(comunicacaoService.enviarComunicacao(id, envioMensagemDTORecord));
     }
 
     @GetMapping()
@@ -47,5 +42,11 @@ public class ComunicacaoController {
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     public ResponseEntity<ComunicacaoOutDTO> cancelarStatus(@RequestParam String emailDestinatario) {
         return ResponseEntity.ok(comunicacaoService.buscarStatusComunicacao(emailDestinatario));
+    }
+
+    @PostMapping()
+    public ResponseEntity<ComunicacaoOutDTO> enviarComunicacao(@RequestParam("id") Long id,
+                                                               @RequestBody EnvioMensagemDTOOutRecord envioMensagemDTORecord) {
+        return ResponseEntity.ok(comunicacaoService.enviarComunicacao(id, envioMensagemDTORecord));
     }
 }

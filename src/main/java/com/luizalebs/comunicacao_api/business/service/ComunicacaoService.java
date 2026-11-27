@@ -1,25 +1,24 @@
 package com.luizalebs.comunicacao_api.business.service;
 
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoInDTO;
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoOutDTO;
-import com.luizalebs.comunicacao_api.business.converter.ComunicacaoConverter;
+import com.luizalebs.comunicacao_api.api.dto.in.ComunicacaoInDTO;
+import com.luizalebs.comunicacao_api.api.dto.out.ComunicacaoOutDTO;
+import com.luizalebs.comunicacao_api.business.mapper.ComunicacaoMapper;
+import com.luizalebs.comunicacao_api.infraestructure.client.NotificacaoClient;
 import com.luizalebs.comunicacao_api.infraestructure.entities.ComunicacaoEntity;
 import com.luizalebs.comunicacao_api.infraestructure.enums.StatusEnvioEnum;
 import com.luizalebs.comunicacao_api.infraestructure.repositories.ComunicacaoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class ComunicacaoService {
 
     private final ComunicacaoRepository repository;
-    private final ComunicacaoConverter converter;
-
-    public ComunicacaoService(ComunicacaoRepository repository, ComunicacaoConverter converter) {
-        this.repository = repository;
-        this.converter = converter;
-    }
+    private final ComunicacaoMapper converter;
+    private final NotificacaoClient notificacaoClient;
 
     public ComunicacaoOutDTO agendarComunicacao(ComunicacaoInDTO dto) {
         if (Objects.isNull(dto)) {
@@ -28,26 +27,48 @@ public class ComunicacaoService {
         dto.setStatusEnvio(StatusEnvioEnum.PENDENTE);
         ComunicacaoEntity entity = converter.paraEntity(dto);
         repository.save(entity);
-        ComunicacaoOutDTO outDTO = converter.paraDTO(entity);
-        return outDTO;
-    }
-
-    public ComunicacaoOutDTO buscarStatusComunicacao(String emailDestinatario) {
-        ComunicacaoEntity entity = repository.findByEmailDestinatario(emailDestinatario);
-        if (Objects.isNull(entity)) {
-            throw new RuntimeException();
-        }
         return converter.paraDTO(entity);
     }
 
-    public ComunicacaoOutDTO alterarStatusComunicacao(String emailDestinatario) {
-        ComunicacaoEntity entity = repository.findByEmailDestinatario(emailDestinatario);
+    private ComunicacaoEntity buscarStatus(String emailDestinatario) {
+
+        ComunicacaoEntity entity =
+                repository.findByEmailDestinatario(emailDestinatario);
+
         if (Objects.isNull(entity)) {
-            throw new RuntimeException();
+            throw new RuntimeException("Email não encontrado");
         }
+
+        return entity;
+    }
+
+    public ComunicacaoOutDTO buscarStatusComunicacao(String emailDestinatario) {
+
+        ComunicacaoEntity entity =
+                buscarStatus(emailDestinatario);
+
+        return converter.paraDTO(entity);
+    }
+
+    public ComunicacaoOutDTO cancelarStatus(String emailDestinatario) {
+
+        ComunicacaoEntity entity =
+                buscarStatus(emailDestinatario);
+
         entity.setStatusEnvio(StatusEnvioEnum.CANCELADO);
+
         repository.save(entity);
-        return (converter.paraDTO(entity));
+
+        return converter.paraDTO(entity);
+    }
+
+    public boolean comunicacaoFoiEnviada(Long id) {
+        ComunicacaoEntity entity = repository.findById(id)
+                .orElseThrow(()
+                        -> new RuntimeException("Comunicação não encontrada")
+                );
+
+        return entity.getStatusEnvio() == StatusEnvioEnum.ENVIADO;
     }
 
 }

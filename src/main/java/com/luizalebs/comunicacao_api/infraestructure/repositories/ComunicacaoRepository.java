@@ -13,4 +13,6 @@ public interface ComunicacaoRepository extends CrudRepository<ComunicacaoEntity,
 
 
     Optional<ComunicacaoEntity> findById(Long id);
+
+
 }

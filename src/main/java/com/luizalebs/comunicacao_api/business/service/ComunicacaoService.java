@@ -2,7 +2,6 @@ package com.luizalebs.comunicacao_api.business.service;
 
 import com.luizalebs.comunicacao_api.api.dto.in.ComunicacaoInDTO;
 import com.luizalebs.comunicacao_api.api.dto.out.ComunicacaoOutDTO;
-import com.luizalebs.comunicacao_api.api.dto.out.EnvioMensagemDTOOutRecord;
 import com.luizalebs.comunicacao_api.business.mapper.ComunicacaoMapper;
 import com.luizalebs.comunicacao_api.infraestructure.client.NotificacaoClient;
 import com.luizalebs.comunicacao_api.infraestructure.entities.ComunicacaoEntity;
@@ -70,24 +69,6 @@ public class ComunicacaoService {
                 );
 
         return entity.getStatusEnvio() == StatusEnvioEnum.ENVIADO;
-    }
-
-    public ComunicacaoOutDTO enviarComunicacao(Long comunicacaoId, EnvioMensagemDTOOutRecord mensagem) {
-        ComunicacaoEntity comunicacaoEntity = repository.findById(comunicacaoId)
-                .orElseThrow(() ->
-                        new RuntimeException("Comunicação não encontrada"));
-
-        if (comunicacaoEntity.getStatusEnvio() == StatusEnvioEnum.ENVIADO) {
-            return converter.paraDTO(comunicacaoEntity);
-        }
-
-        notificacaoClient.enviarEmail(mensagem);
-
-        comunicacaoEntity.setStatusEnvio(StatusEnvioEnum.ENVIADO);
-
-        repository.save(comunicacaoEntity);
-
-        return converter.paraDTO(comunicacaoEntity);
     }
 
 }
